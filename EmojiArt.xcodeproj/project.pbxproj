@@ -17,6 +17,7 @@
 		F89A333228A68B6C00926125 /* UtilityExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F89A333028A68B6B00926125 /* UtilityExtensions.swift */; };
 		F89A333328A68B6C00926125 /* UtilityViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = F89A333128A68B6B00926125 /* UtilityViews.swift */; };
 		F8F0DA7D28AAD07B001C34EC /* PaletteStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F0DA7C28AAD07B001C34EC /* PaletteStore.swift */; };
+		F8F0DA7F28ABE1CB001C34EC /* PaletteChooser.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8F0DA7E28ABE1CB001C34EC /* PaletteChooser.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		F89A333028A68B6B00926125 /* UtilityExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UtilityExtensions.swift; path = ../../../../../../Downloads/EmojiArtL10/EmojiArt/UtilityExtensions.swift; sourceTree = "<group>"; };
 		F89A333128A68B6B00926125 /* UtilityViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityViews.swift; sourceTree = "<group>"; };
 		F8F0DA7C28AAD07B001C34EC /* PaletteStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteStore.swift; sourceTree = "<group>"; };
+		F8F0DA7E28ABE1CB001C34EC /* PaletteChooser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteChooser.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 				F89A331E28A596BF00926125 /* Assets.xcassets */,
 				F89A332028A596BF00926125 /* Preview Content */,
 				F8F0DA7C28AAD07B001C34EC /* PaletteStore.swift */,
+				F8F0DA7E28ABE1CB001C34EC /* PaletteChooser.swift */,
 			);
 			path = EmojiArt;
 			sourceTree = "<group>";
@@ -163,6 +166,7 @@
 				F89A332928A596D300926125 /* EmojiArtModel.swift in Sources */,
 				F89A332B28A6868D00926125 /* EmojiArtModel.Background.swift in Sources */,
 				F89A333328A68B6C00926125 /* UtilityViews.swift in Sources */,
+				F8F0DA7F28ABE1CB001C34EC /* PaletteChooser.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

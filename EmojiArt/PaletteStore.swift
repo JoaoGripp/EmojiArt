@@ -71,7 +71,7 @@ class PaletteStore: ObservableObject {
             insertPalette(named: "COVID", emojis: "💉🦠😷🤧🤒")
             insertPalette(named: "Faces", emojis: "😀😃😄😁😆😅😂🤣🥲☺️😊😇🙂🙃😉😌😍🥰😘😗😙😚😋😛😝😜🤪🤨🧐🤓😎🥸🤩🥳😏😞😔😟😕🙁☹️😣😖😫😩🥺😢😭😤😠😡🤯😳🥶😥😓🤗🤔🤭🤫🤥😬🙄😯😧🥱😴🤮😷🤧🤒🤠")
         } else {
-            print("successfully loaded palettes from UserDefaults: \(palettes)")
+//            print("successfully loaded palettes from UserDefaults: \(palettes)")
         }
     }
     
