@@ -37,8 +37,12 @@ struct PaletteChooser: View {
     
     @ViewBuilder
     var contextMenuView: some View {
+        AnimatedActionButton(title: "Edit", systemImage: "pencil") {
+            paletteToEdit = store.palette(at: chosenPaletteIndex)
+        }
         AnimatedActionButton(title: "New", systemImage: "plus") {
             store.insertPalette(named: "New", emojis: "", at: chosenPaletteIndex)
+            paletteToEdit = store.palette(at: chosenPaletteIndex)
         }
         AnimatedActionButton(title: "Delete", systemImage: "minus.circle") {
             chosenPaletteIndex = store.removePalette(at: chosenPaletteIndex)
@@ -70,7 +74,16 @@ struct PaletteChooser: View {
         .id(palette.id) // id to change body view, so the animation works for the entire HStack
         .transition(rollTransition)
 //        clipped the view, so the roller animation do not enter on the other view
+        .popover(item: $paletteToEdit) { palette in
+            PaletteEditor(palette: $store.palettes[palette])
+        }
+//        .popover(isPresented: $editing) {
+//            PaletteEditor(palette: $store.palettes[chosenPaletteIndex])
+//        }
     }
+    
+//    @State private var editing = false
+    @State private var paletteToEdit: Palette?
     
     var rollTransition: AnyTransition {
         AnyTransition.asymmetric(
