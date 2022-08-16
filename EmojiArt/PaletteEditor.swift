@@ -17,6 +17,8 @@ struct PaletteEditor: View {
             removeEmojiSection
             
         }
+        .navigationTitle("Edit \(palette.name)")
+//        .navigationBarTitleDisplayMode(.inline)
         .frame(minWidth: 300, minHeight: 350)
     }
     
