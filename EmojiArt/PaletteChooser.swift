@@ -20,6 +20,7 @@ struct PaletteChooser: View {
             paletteControlButton
             body(for: store.palette(at: chosenPaletteIndex))
         }
+        .clipped()
     }
     
     var paletteControlButton: some View {
@@ -31,6 +32,17 @@ struct PaletteChooser: View {
             Image(systemName: "paintpalette")
         }
         .font(emojiFont)
+        .contextMenu { contextMenuView }
+    }
+    
+    @ViewBuilder
+    var contextMenuView: some View {
+        AnimatedActionButton(title: "New", systemImage: "plus") {
+            store.insertPalette(named: "New", emojis: "", at: chosenPaletteIndex)
+        }
+        AnimatedActionButton(title: "Delete", systemImage: "minus.circle") {
+            chosenPaletteIndex = store.removePalette(at: chosenPaletteIndex)
+        }
     }
     
     func body(for palette: Palette) -> some View {
@@ -41,6 +53,7 @@ struct PaletteChooser: View {
         }
         .id(palette.id) // id to change body view, so the animation works for the entire HStack
         .transition(rollTransition)
+//        clipped the view, so the roller animation do not enter on the other view
     }
     
     var rollTransition: AnyTransition {
