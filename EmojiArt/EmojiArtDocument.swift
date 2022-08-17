@@ -67,7 +67,7 @@ class EmojiArtDocument: ReferenceFileDocument {
         backgroundImage = nil
         switch emojiArt.background {
         case .url(let url):
-//             fetch the url
+            //             fetch the url
             backgroundImageFetchStatus = .fecthing
             backgroundImageFetchCancellable?.cancel()
             let session = URLSession.shared
@@ -82,40 +82,6 @@ class EmojiArtDocument: ReferenceFileDocument {
                     self?.backgroundImageFetchStatus = (image != nil) ? .idle : .failed(url)
                 }
             
-//            Without .replaceError
-//                .sink (
-//                    receiveCompletion: { result in
-//                        switch result {
-//                        case .finished:
-//                            print("success")
-//                        case .failure(let error):
-//                            print("failed: error = \(error)")
-//                        }
-//                    }, receiveValue: { [weak self] image in
-//                        self?.backgroundImage = image
-//                        self?.backgroundImageFetchStatus = (image != nil) ? .idle : .failed(url)
-//                })
-//                .assign(to: \EmojiArtDocument.backgroundImage, on: self)
-            
-//            cancellable.cancel()
-            
-            
-            
-//            CGD
-//            DispatchQueue.global(qos: .userInitiated).async {
-//                let imageData = try? Data(contentsOf: url)
-//                DispatchQueue.main.async { [weak self] in
-//                    if self?.emojiArt.background == EmojiArtModel.Background.url(url) {
-//                        self?.backgroundImageFetchStatus = .idle
-//                        if imageData != nil {
-//                            self?.backgroundImage = UIImage(data: imageData!)
-//                        }
-//                        if self?.backgroundImage == nil {
-//                            self?.backgroundImageFetchStatus = .failed(url)
-//                        }
-//                    }
-//                }
-//            }
         case .imageData(let data):
             backgroundImage = UIImage(data: data)
         case .blank:
@@ -126,27 +92,49 @@ class EmojiArtDocument: ReferenceFileDocument {
     
 //    MARK: - Intent(s)
     
-    func setBackground(_ background: EmojiArtModel.Background) {
-        emojiArt.background = background
-        print("background set to \(background)")
-    }
-    
-    func addEmoji(_ emoji: String, at location: (x: Int, y: Int), size: CGFloat) {
-        emojiArt.addEmoji(emoji, at: location, size: Int(size))
-    }
-    
-    func moveEmoji(_ emoji: EmojiArtModel.Emoji, by offset: CGSize) {
-        if let index = emojiArt.emojis.index(matching: emoji) {
-            emojiArt.emojis[index].x += Int(offset.width)
-            emojiArt.emojis[index].y += Int(offset.height)
+    func setBackground(_ background: EmojiArtModel.Background, undoManager: UndoManager?) {
+        undoablyPerform(operation: "Set Background", with: undoManager) {
+            emojiArt.background = background
+            print("background set to \(background)")
         }
     }
     
-    func scaleEmoji(_ emoji: EmojiArtModel.Emoji, by scale: CGFloat) {
-        if let index = emojiArt.emojis.index(matching: emoji) {
-            emojiArt.emojis[index].size = Int((CGFloat(emojiArt.emojis[index].size) * scale).rounded(.toNearestOrAwayFromZero))
+    func addEmoji(_ emoji: String, at location: (x: Int, y: Int), size: CGFloat, undoManager: UndoManager?) {
+        undoablyPerform(operation: "Add Emoji", with: undoManager) {
+            emojiArt.addEmoji(emoji, at: location, size: Int(size))
         }
     }
+    
+    func moveEmoji(_ emoji: EmojiArtModel.Emoji, by offset: CGSize, undoManager: UndoManager?) {
+        if let index = emojiArt.emojis.index(matching: emoji) {
+            undoablyPerform(operation: "Move", with: undoManager) {
+                emojiArt.emojis[index].x += Int(offset.width)
+                emojiArt.emojis[index].y += Int(offset.height)
+            }
+        }
+    }
+    
+    func scaleEmoji(_ emoji: EmojiArtModel.Emoji, by scale: CGFloat, undoManager: UndoManager?) {
+        if let index = emojiArt.emojis.index(matching: emoji) {
+            undoablyPerform(operation: "Scale", with: undoManager) {
+                emojiArt.emojis[index].size = Int((CGFloat(emojiArt.emojis[index].size) * scale).rounded(.toNearestOrAwayFromZero))
+            }
+        }
+    }
+    
+//    MARK: - Undo
+    
+    private func undoablyPerform(operation: String, with undoManager: UndoManager? = nil, doit: () -> Void) {
+        let oldEmojiArt = emojiArt
+        doit()
+        undoManager?.registerUndo(withTarget: self) { myself in
+            myself.undoablyPerform(operation: operation, with: undoManager) {
+                myself.emojiArt = oldEmojiArt
+            }
+        }
+        undoManager?.setActionName(operation)
+    }
+    
     
     
 }
