@@ -79,6 +79,7 @@ struct PaletteChooser: View {
 //        clipped the view, so the roller animation do not enter on the other view
         .popover(item: $paletteToEdit) { palette in
             PaletteEditor(palette: $store.palettes[palette])
+                .wrappedNavigationViewToMakeDismissable { paletteToEdit = nil }
         }
         .sheet(isPresented: $managing) {
             PaletteManager()
