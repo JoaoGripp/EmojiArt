@@ -92,22 +92,22 @@ struct UndoButton: View {
                     Image(systemName: "arrow.uturn.forward.circle")
                 }
             }
-                .contextMenu {
-                    if canUndo {
-                        Button {
-                            undoManager?.undo()
-                        } label: {
-                            Label(undo ?? "Undo", systemImage: "arrow.uturn.backward")
-                        }
-                    }
-                    if canRedo {
-                        Button {
-                            undoManager?.redo()
-                        } label: {
-                            Label(redo ?? "Redo", systemImage: "arrow.uturn.forward")
-                        }
+            .contextMenu {
+                if canUndo {
+                    Button {
+                        undoManager?.undo()
+                    } label: {
+                        Label(undo ?? "Undo", systemImage: "arrow.uturn.backward")
                     }
                 }
+                if canRedo {
+                    Button {
+                        undoManager?.redo()
+                    } label: {
+                        Label(redo ?? "Redo", systemImage: "arrow.uturn.forward")
+                    }
+                }
+            }
         }
     }
 }
@@ -150,3 +150,33 @@ extension View {
         
     }
 }
+
+extension View {
+    func compactableToolBar<Content>(@ViewBuilder content: () -> Content) -> some View where Content: View {
+        self.toolbar {
+            content().modifier(CompactableIntoContextMenu())
+        }
+    }
+}
+
+struct CompactableIntoContextMenu: ViewModifier {
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
+    
+    var compact: Bool { horizontalSizeClass == .compact }
+    
+    func body(content: Content) -> some View {
+        if compact {
+            Button {
+                
+            } label: {
+                Image(systemName: "ellipsis.circle")
+            }
+            .contextMenu {
+                content
+            }
+        } else {
+            content
+        }
+    }
+}
+

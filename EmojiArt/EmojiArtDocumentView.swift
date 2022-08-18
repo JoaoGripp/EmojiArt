@@ -63,29 +63,24 @@ struct EmojiArtDocumentView: View {
                     zoomToFit(image, in: geometry.size)
                 }
             }
-            .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
-//                    UndoButton(
-//                        undo: undoManager?.optionalUndoMenuItemTitle,
-//                        redo: undoManager?.optionalRedoMenuItemTitle
-//                    )
-                    AnimatedActionButton(title: "Paste Background", systemImage: "doc.on.clipboard") {
-                        pasteBackground()
-                    }
-                    if let undoManager = undoManager {
-                        if undoManager.canUndo {
-                            AnimatedActionButton(title: undoManager.undoActionName, systemImage: "arrow.uturn.backward") {
-                                undoManager.undo()
-                            }
+            .compactableToolBar {
+                AnimatedActionButton(title: "Paste Background", systemImage: "doc.on.clipboard") {
+                    pasteBackground()
+                }
+                if let undoManager = undoManager {
+                    if undoManager.canUndo {
+                        AnimatedActionButton(title: undoManager.undoActionName, systemImage: "arrow.uturn.backward") {
+                            undoManager.undo()
                         }
-                        if undoManager.canRedo {
-                            AnimatedActionButton(title: undoManager.undoActionName, systemImage: "arrow.uturn.forward") {
-                                undoManager.redo()
-                            }
+                    }
+                    if undoManager.canRedo {
+                        AnimatedActionButton(title: undoManager.undoActionName, systemImage: "arrow.uturn.forward") {
+                            undoManager.redo()
                         }
                     }
                 }
             }
+            
         }
     }
     
